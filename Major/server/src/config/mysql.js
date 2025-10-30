@@ -3,24 +3,23 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-// Create Sequelize instance
-const sequelize = new Sequelize(
-  process.env.MYSQL_DATABASE || 'skillswap_db',
-  process.env.MYSQL_USERNAME || 'root',
-  process.env.MYSQL_PASSWORD || '',
-  {
-    host: process.env.MYSQL_HOST || 'localhost',
-    port: process.env.MYSQL_PORT || 3306,
-    dialect: 'mysql',
-    logging: process.env.NODE_ENV === 'development' ? console.log : false,
-    pool: {
-      max: 10,
-      min: 0,
-      acquire: 30000,
-      idle: 10000,
+// Create Sequelize instance using connection string
+const sequelize = new Sequelize(process.env.TIDB_CONNECTION_STRING || process.env.MYSQL_CONNECTION_STRING, {
+  dialect: 'mysql',
+  logging: process.env.NODE_ENV === 'development' ? console.log : false,
+  dialectOptions: {
+    ssl: {
+      require: true,
+      rejectUnauthorized: false, // For TiDB Cloud SSL
     },
-  }
-);
+  },
+  pool: {
+    max: 10,
+    min: 0,
+    acquire: 30000,
+    idle: 10000,
+  },
+});
 
 // Test the connection
 export const connectMySQL = async () => {
