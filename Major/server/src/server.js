@@ -117,17 +117,31 @@ const io = new Server(server, {
 app.use(
   cors({
     origin: function (origin, callback) {
+      // Allow requests with no origin (mobile apps, etc.)
       if (!origin) return callback(null, true);
-      if (allowedOrigins.includes(origin)) return callback(null, true);
+      
+      // Allow your specific frontend domains
+      const productionOrigins = [
+        "https://peerconnect-1.onrender.com",
+        "https://peerconnect.onrender.com"
+      ];
+      
+      if (allowedOrigins.includes(origin) || productionOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+      
       if (
         process.env.NODE_ENV !== "production" &&
         /^http:\/\/(localhost|127\.0\.0\.1)(:\\d+)?$/.test(origin)
       ) {
         return callback(null, true);
       }
+      
+      console.log("CORS blocked origin:", origin);
       return callback(new Error("CORS not allowed for this origin"));
     },
-    methods: ["GET", "POST", "PUT", "DELETE"],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
     credentials: true,
   })
 );
