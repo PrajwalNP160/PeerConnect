@@ -1,6 +1,5 @@
 import { getAuth } from "@clerk/express";
 import { User } from "../models/user.model.js";
-import cloudinary from "../../lib/cloudinary.js";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -100,18 +99,9 @@ export const onboardUser = async (req, res) => {
 
     let certificateUrls = [];
     if (req.files && req.files.length > 0) {
-      for (const file of req.files) {
-        const base64Image = `data:${
-          file.mimetype
-        };base64,${file.buffer.toString("base64")}`;
-
-        const uploaded = await cloudinary.uploader.upload(base64Image, {
-          folder: "certificates",
-          resource_type: "image",
-        });
-
-        certificateUrls.push(uploaded.secure_url);
-      }
+      // Note: Certificate upload now handled by MySQL upload endpoint
+      // Use /api/mysql-upload/certificate endpoint instead
+      certificateUrls = req.body.certificateUrls || [];
     }
 
     const updatedUser = await User.findOneAndUpdate(
@@ -219,19 +209,12 @@ export const updateUserProfile = async (req, res) => {
       experienceType,
     } = req.body;
 
-    // 🔹 Handle certificate uploads (if files are sent)
+    // 🔹 Handle certificate uploads (now handled by MySQL upload endpoint)
     let certificateUrls = [];
     if (req.files && req.files.length > 0) {
-      for (const file of req.files) {
-        const base64Image = `data:${
-          file.mimetype
-        };base64,${file.buffer.toString("base64")}`;
-        const uploaded = await cloudinary.uploader.upload(base64Image, {
-          folder: "certificates",
-          resource_type: "image",
-        });
-        certificateUrls.push(uploaded.secure_url);
-      }
+      // Note: Certificate upload now handled by MySQL upload endpoint
+      // Use /api/mysql-upload/certificate endpoint instead
+      certificateUrls = req.body.certificateUrls || [];
     }
 
     // 🔹 Normalize helper (accept JSON arrays OR comma-separated strings)
