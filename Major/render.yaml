@@ -1,0 +1,43 @@
+services:
+  - type: web
+    name: skillswap-backend
+    env: node
+    buildCommand: cd server && npm install
+    startCommand: cd server && npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: MONGO_URI
+        fromDatabase:
+          name: skillswap-mongo
+          property: connectionString
+      - key: MYSQL_HOST
+        fromDatabase:
+          name: skillswap-mysql
+          property: host
+      - key: MYSQL_PORT
+        fromDatabase:
+          name: skillswap-mysql
+          property: port
+      - key: MYSQL_DATABASE
+        fromDatabase:
+          name: skillswap-mysql
+          property: database
+      - key: MYSQL_USERNAME
+        fromDatabase:
+          name: skillswap-mysql
+          property: user
+      - key: MYSQL_PASSWORD
+        fromDatabase:
+          name: skillswap-mysql
+          property: password
+
+databases:
+  - name: skillswap-mongo
+    databaseName: skillswap_db
+    user: skillswap_user
+  - name: skillswap-mysql
+    databaseName: skillswap_files
+    user: skillswap_user

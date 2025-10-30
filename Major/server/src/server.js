@@ -73,8 +73,6 @@ import toolsRoutes from "./routes/tools.routes.js";
 import sessionRoutes from "./routes/session.routes.js";
 import assessmentRoutes from "./routes/assessment.routes.js";
 import studyGroupRoutes from "./routes/studyGroup.routes.js";
-import uploadRoutes from "./routes/upload.routes.js";
-import directUploadRoutes from "./routes/directUpload.routes.js";
 import mysqlUploadRoutes from "./routes/mysqlUpload.routes.js";
 import { connectMySQL } from "./config/mysql.js";
 
@@ -136,8 +134,6 @@ app.use("/api/tools", toolsRoutes);
 app.use("/api/sessions", sessionRoutes);
 app.use("/api/assessments", assessmentRoutes);
 app.use("/api/study-groups", studyGroupRoutes);
-app.use("/api/upload", uploadRoutes);
-app.use("/api/direct-upload", directUploadRoutes);
 app.use("/api/mysql-upload", mysqlUploadRoutes);
 
 app.get("/health", (req, res) => {
