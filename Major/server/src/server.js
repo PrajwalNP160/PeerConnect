@@ -84,14 +84,22 @@ let allowedOrigins = (process.env.ALLOWED_ORIGINS || "")
   .split(",")
   .map((o) => o.trim())
   .filter(Boolean);
-if (process.env.NODE_ENV !== "production" && allowedOrigins.length === 0) {
+
+// Add your frontend domains
+if (process.env.NODE_ENV === "production") {
+  allowedOrigins = [
+    "https://peerconnect-1.onrender.com", // Your frontend domain
+    "https://peerconnect.onrender.com",   // Alternative frontend domain
+    ...allowedOrigins
+  ];
+} else {
   allowedOrigins = ["http://localhost:5173", "http://127.0.0.1:5173"];
 }
 
 const app = express();
 const server = http.createServer(app);
 
-// ✅ Socket.io CORS (allow any localhost:* in dev)
+// ✅ Socket.io CORS
 const socketCorsOrigin =
   process.env.NODE_ENV !== "production"
     ? [/^http:\/\/(localhost|127\.0\.0\.1)(:\\d+)?$/]

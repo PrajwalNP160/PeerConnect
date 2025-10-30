@@ -15,6 +15,10 @@ services:
           property: connectionString
       - key: TIDB_CONNECTION_STRING
         value: your_tidb_cloud_connection_string_here
+      - key: ALLOWED_ORIGINS
+        value: https://peerconnect-1.onrender.com,https://peerconnect.onrender.com
+      - key: FRONTEND_URL
+        value: https://peerconnect-1.onrender.com
 
 databases:
   - name: skillswap-mongo

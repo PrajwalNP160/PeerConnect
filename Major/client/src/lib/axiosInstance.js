@@ -15,7 +15,7 @@ const API_BASE_URL =
   import.meta.env.VITE_API_URL ||
   (import.meta.env.MODE === "development"
     ? "http://localhost:8000/api"
-    : "https://skillswap-h4b-b9s2.onrender.com/api");
+    : "https://peerconnect-cnqu.onrender.com/api");
 
 export const axiosInstance = axios.create({
   baseURL: API_BASE_URL,
